@@ -1,28 +1,39 @@
-const EventPage = () => {
+import Image from "next/image";
+
+const EventPage = ({ data }) => {
   return (
     <div>
-      <h1>Events Page</h1>
-      <div>
-        <a href="">
-          <img src="" alt="" />
-          <h2>Event in Almali</h2>
-        </a>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero ut
-          corrupti iure nostrum maiores distinctio commodi excepturi veniam
-          inventore minus in, deserunt tempore quidem suscipit, autem
-          perferendis quam asperiores numquam nisi. Vel quibusdam voluptatem,
-          debitis libero, perspiciatis mollitia alias ex eveniet vero corporis
-          omnis rerum excepturi voluptate, iusto in! Quam beatae quos ea iste,
-          cumque sed eius ipsa voluptatibus commodi odit earum corporis, aut
-          nisi amet dicta necessitatibus quibusdam maxime nulla, deserunt a.
-          Quae beatae iste aspernatur veritatis dolore, earum at alias. Voluptas
-          atque, ut sit amet fuga tenetur dolores voluptates! Expedita doloribus
-          sit qui recusandae temporibus. Aut, quia explicabo!
-        </p>
-      </div>
+      <Image src={data?.image} alt={data?.title} width={1000} height={300} />
+      <h1>{data.title}</h1>
+      <p>{data.description}</p>
     </div>
   );
 };
 
 export default EventPage;
+
+export async function getStaticPaths() {
+  const { allEvents } = await import("/data/data.json");
+  const allPaths = allEvents?.map((path) => {
+    return {
+      params: { cat: path.city, id: path.id },
+    };
+  });
+
+  return {
+    paths: allPaths,
+    fallback: false,
+  };
+}
+
+export async function getStaticProps(context) {
+  const id = context?.params?.id;
+  const { allEvents } = await import("/data/data.json");
+  const data = allEvents.find((ev) => ev.id === id);
+
+  return {
+    props: {
+      data,
+    },
+  };
+}
