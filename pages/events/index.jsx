@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const EventsPage = ({ data }) => {
   return (
-    <div>
+    <div className="events_page">
       <h1>Events Page</h1>
       <div>
         {data.map((ev) => (
