@@ -1,33 +1,41 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
 const SingleEvent = ({ data }) => {
   const router = useRouter();
   const inputEmail = useRef();
+  const [message, setMessage] = useState("");
 
-  //! submiting form
   const onSubmit = async (e) => {
     e.preventDefault();
-    const email = inputEmail.current.value;
-    const eventId = router?.query?.id;
+    const emailValue = inputEmail.current.value;
+    const eventId = router?.query.id;
+
+    const validRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    if (!emailValue.match(validRegex)) {
+      setMessage("Please introduce a correct email address");
+    }
 
     try {
-      const res = await fetch("/api/email-registration", {
+      const response = await fetch("/api/email-registration", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-          eventId,
-        }),
+        body: JSON.stringify({ email: emailValue, eventId }),
       });
-      const json = await res.json();
 
-      console.log(json);
-    } catch (error) {
-      console.log(error);
+      if (!response.ok) throw new Error(`Error: ${response.status}`);
+
+      const data = await response.json();
+      setMessage(data.message);
+      inputEmail.current.value = "";
+    } catch (e) {
+      setMessage("This email has already been registered");
+      console.log(e);
     }
   };
 
@@ -52,7 +60,7 @@ const SingleEvent = ({ data }) => {
         />
         <button type="submit">Submit</button>
       </form>
-      <p>message</p>
+      <p>{message}</p>
     </div>
   );
 };
