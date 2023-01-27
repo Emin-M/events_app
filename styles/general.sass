@@ -114,7 +114,9 @@ main
       box-shadow: none
       border-radius: 5px
       border: 1px solid #ccc
+      padding: 0 5px
       font-size: 16px
+      outline: none
     button
       border-radius: 5px
       height: 40px
@@ -124,8 +126,18 @@ main
       text-transform: uppercase
       margin-left: 10px
       font-weight: 600
-      background: #dcfff3
+      background: #333
+      color: #dcfff3
       cursor: pointer
+      transition: 0.3s
       &:hover
-        color: #dcfff3
-        background: #333
+        background: #dcfff3
+        color: #333
+
+@media (max-width: 1050px) 
+  .event_single_page
+    img
+     width: 100%
+     height: 300px
+        
+        
