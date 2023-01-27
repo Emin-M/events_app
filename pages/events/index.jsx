@@ -1,4 +1,4 @@
-import AllEvents from "@/src/components/events/events-page";
+import AllEvents from "@/src/components/events/events";
 
 const EventsPage = ({ data }) => {
   return <AllEvents data={data} />;
