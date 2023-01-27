@@ -1,5 +1,5 @@
 export const Footer = () => (
   <footer>
-    <p>© EventsApp 2023. Bütün hüquqlar qorunur.</p>
+    <p>© EventsApp 2023. All rights reserved.</p>
   </footer>
 );
